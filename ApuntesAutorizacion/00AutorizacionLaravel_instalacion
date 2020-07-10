@@ -1,0 +1,254 @@
+-----install  laravel auth---
+cd  /var/www/hugo/stydePHP/AutorizacionLaravel
+php artisan serve 
+http://autorizacion-laravel.com/
+
+composer create-project --prefer-dist laravel/laravel autorizacion-laravel
+
+cd /var/www/hugo/stydePHP/AutorizacionLaravel/autorizacion-laravel
+
+composer require laravel/ui
+
+------------------------
+
+php artisan ui bootstrap --auth
+
+php artisan ui vue --auth
+
+--------------------------
+npm install -g npm
+
+npm install && npm run dev
+
+---------------PHPUNIT--------------------
+
+https://packagist.org/packages/phpunit/phpunit
+
+composer require phpunit/phpunit
+
+composer dump-autoload
+
+hacer prueba test:
+
+alias t=vendor/bin/phpunit
+> t  --stop-on-failure  (para test en el primer error)
+
+-------------MEJORAR PHPUNIT IMPRESION-----
+
+Instala o actualiza el paquete collision: composer require nunomaduro/collision --dev
+
+phpunit.xml:
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         ...
+         printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer"
+>
+
+composer.json:
+
+https://packagist.org/packages/nunomaduro/collision 
+poner ultima version
+
+
+"require-dev": {
+        ....
+        "nunomaduro/collision": "^4.1",
+        .......
+    },
+composer update
+---------DUSK------------
+
+https://packagist.org/packages/laravel/dusk
+
+composer require laravel/dusk
+
+php artisan dusk:install
+
+sudo chmod -R 777 /var/www/hugo/stydePHP/AutorizacionLaravel
+---crear base de datos y conectar---
+
+autorizacion-laravel
+autorizacion-laravel-test
+y crear base datos de prueba para dusk.
+
+------------error al instalar dusk---------
+
+-------------probelmas instlar larvel dusk----------------
+
+sudo apt remove libcurl4
+sudo apt install curl
+
+sudo apt-get install php-curl
+
+composer require --dev laravel/dusk
+
+php artisan dusk
+
+https://laravel.com/docs/7.x/dusk#installation
+
+sudo apt-get install chromium-chromedriver
+
+wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O chrome64.deb
+
+sudo dpkg -i chrome64.deb
+
+
+-----env----
+
+APP_NAME=autorizacion
+APP_ENV=local
+APP_KEY=base64:Xe4ykRM7k73rvTEsKBYTTXb91s/mIl+QLzR11ioZ8cw=
+APP_DEBUG=true
+APP_URL=http://autorizacion-laravel.com/
+
+LOG_CHANNEL=stack
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=autorizacion-laravel
+DB_USERNAME=admin
+DB_PASSWORD=admin
+
+---------------
+entorno propio para Dusk, copiando el archivo .env y 
+pegándolo en el mismo directorio principal con el nombre .env.dusk.local
+
+añadir wwww en .env.dusk.local:
+
+APP_URL=http://www.autorizacion-laravel.com/
+DB_DATABASE=autorizacion-laravel-test
+------phpunit.xml----
+
+<php>
+        ....
+        <env name="DB_DATABASE" value="autorizacion-laravel"/>
+        <env name="DB_DATABASE" value="autorizacion-laravel-test"/>
+    </php>
+</phpunit>
+
+-----evitar problemas migracion---
+
+App/Providers/AppServiceProvider:
+
+use Illuminate\Support\Facades\Schema;
+
+public function boot()
+{
+    Schema::defaultStringLength(191);
+}
+
+------------------------------------
+
+composer dump-autoload 
+
+
+tests/Browser/ExampleTest.php:
+
+public function testBasicExample()
+    {
+        $this->browse(function (Browser $browser) {
+            
+
+                $browser->visit('/')
+                     ->assertTitle('Laravel');   
+                    //->assertSee('Laravel');
+        });
+    }
+
+
+hacer pruebas en dusk:
+
+https://www.cursosdesarrolloweb.es/blog/laravel-dusk-guia-completa-para-realizar-pruebas-de-navegador-con-laravel/
+
+php artisan dusk
+---------------localHost------------------
+
+https://styde.net/como-crear-virtual-hosts-con-apache-para-linux-y-mac/
+
+
+-----------------------------
+-----------------------------
+crear
+-----------------------------
+-----------------------------
+
+
+cd /etc/apache2/sites-available/
+
+sudo cp 000-default.conf  autorizacion-laravel.com.conf
+
+sudo gedit autorizacion-laravel.com.conf
+
+
+---------------------------------------------
+
+<VirtualHost *:80>
+    ServerName  autorizacion-laravel.com
+    ServerAlias  www.autorizacion-laravel.com
+    ServerAdmin webmaster@localhost
+    DocumentRoot  /var/www/hugo/stydePHP/AutorizacionLaravel/autorizacion-laravel/public
+    
+
+<Directory  /var/www/hugo/stydePHP/AutorizacionLaravel/autorizacion-laravel/public>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    allow from all
+</Directory>
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+
+
+----------------------------------------------------
+
+sudo a2ensite autorizacion-laravel.com.conf
+
+sudo systemctl reload apache2
+
+sudo gedit /etc/hosts
+
+-----------------------------------------------------
+
+127.0.0.1    localhost
+127.0.1.1    debian
+127.1.1.1       serverSOPlocalhost.com.sv
+127.0.0.1    aprendiendo-laravel.com
+127.0.0.1       autorizacion-laravel.com
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+
+
+-------------------------------------------------------------
+
+sudo a2enmod rewrite
+
+sudo service apache2 restart
+
+sudo systemctl restart apache2
+
+sudo systemctl status apache2
+
+Q
+
+-----------------------------
+-----------------------------
+eliminar
+-----------------------------
+-----------------------------
+
+sudo a2dissite cms.local.conf
+sudo systemctl reload apache2
+
+-----web------
+
+php artisan serve 
+http://autorizacion-laravel.com/
+ 

@@ -1,0 +1,92 @@
+-----file---
+cd /var/www/hugo/stydePHP/AutorizacionLaravel/autorizacion-laravel/
+php artisan serve 
+http://autorizacion-laravel.com/
+-------usuario base-----
+hugo
+hugo@hugo.es
+contrasenya
+------GIT-----
+https://desarrolloweb.com/manuales/manual-de-git.html
+
+$ git init
+$ git add .                          
+$ git status
+$ git commit -m  "autorizacion0V00"
+$git push origin localBranchName:remoteBranchName
+$ clear
+
+
+----pruebas----
+
+php artisan dusk
+
+alias t=vendor/bin/phpunit
+> t  --stop-on-failure  (para test en el primer error)
+
+----------LINKS--------------
+
+---------------APUNTES-----
+
+En web.php encontramos diferentes rutas. Auth::routes() incluye las rutas de inicio de sesión, registro y recuperación de contraseña. También tenemos la ruta de home, con el controlador HomeController.
+
+El controlador HomeController utiliza un middleware llamado auth.
+
+Kernel:
+
+protected $routeMiddleware = [
+   'auth' => \Illuminate\Auth\Middleware\Authenticate::class, 
+
+Illuminate\Auth\Middleware. 
+ vendor/laravel/framework/src/Auth/Middleware/Authenticate.php:
+
+Authenticate tenemos método  handle que es el método principal 
+del middleware. Dentro de este método, Laravel llama a otro método con el nombre authenticate:
+
+
+public function handle($request, Closure $next, ...$guards)
+{
+    $this->authenticate($guards);
+
+    return $next($request);
+}
+
+
+el método authenticate  método authenticate, pero esta vez del objeto auth de la 
+clase AuthManager  pero esta vez dentro de la clase SessionGuard:
+
+protected function authenticate(array $guards)
+{
+    if (empty($guards)) {
+        return $this->auth->authenticate();
+    }
+
+Exceptions/Handler.php. En la clase Handler llamamos al método render. 
+una excepción de autenticación se va a ejecutar el método unauthenticated:
+
+if ($e instanceof HttpResponseException) {
+    return $e->getResponse();
+} elseif ($e instanceof AuthenticationException) {
+    return $this->unauthenticated($request, $e);
+} elseif ($e instanceof ValidationException) {
+    return $this->convertValidationExceptionResponse($e, $request);
+}
+
+JSON se va a enviar tipo JSON con el código HTTP 401 (no autorizado) 
+y si se está esperando HTML:
+
+return $request->expectsJson()
+            ? response->json(['message' => $exception->getMessage()], 401)
+            : redirect()->guest(route('login));
+
+-----EJEMPLO-----
+
+php artisan migrate
+
+--------usuario base------
+
+hugo
+hugo@hugo.es
+contrasenya
+
+---------------------------------
