@@ -16,7 +16,7 @@ $ git status
 $ git commit -m  "autorizacion0V00"
 $git remote add origin https://github.com/hugobcn/autorizacionLaravel.git
 $git push -u origin master
-$git push -u origin 01RestricionAccesoUsuarios
+git push origin master:01RestricionAccesoUsuarios 
 hugobcn
 password
 $ clear
