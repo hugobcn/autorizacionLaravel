@@ -2,6 +2,7 @@
 cd /var/www/hugo/stydePHP/AutorizacionLaravel/autorizacion-laravel/
 php artisan serve 
 http://autorizacion-laravel.com/
+https://github.com/hugobcn/autorizacionLaravel
 -------usuario base-----
 hugo
 hugo@hugo.es
@@ -13,7 +14,11 @@ $ git init
 $ git add .                          
 $ git status
 $ git commit -m  "autorizacion0V00"
-$git push origin localBranchName:remoteBranchName
+$git remote add origin https://github.com/hugobcn/autorizacionLaravel.git
+$git push -u origin master
+$git push -u origin 01RestricionAccesoUsuarios
+hugobcn
+password
 $ clear
 
 
